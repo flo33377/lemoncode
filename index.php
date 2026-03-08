@@ -62,23 +62,29 @@ include_once(__DIR__ . "/src/main.php");
   <div id="burger_menu">
   <!-- contenu injecté en JS -->
   </div>
+
+  <div id="menu_overlay"></div>
   
 
   <main id='content'>
 
+  <?php if($subjectSlug) : ?>
+    <a href="<?= BASE_URL ?>?summary=<?= $subjectSlug ?>" class="nav_courses_bar back_btn">◀️ Sommaire</a>
+  <?php endif ?>
+
   <?php include($content); ?>
 
 
-  <div id="nav_courses_bar">
+  <div class="nav_courses_bar">
     <div>
       <?php if ($prev): ?>
-        <a href="<?= BASE_URL ?>?cours=<?= $prev ?>"> < Cours précédent</a>
+        <a href="<?= BASE_URL ?>?cours=<?= $prev ?>"> ◀️ Cours précédent</a>
       <?php endif; ?>
     </div>
 
     <div>
       <?php if ($next): ?>
-        <a href="<?= BASE_URL ?>?cours=<?= $next ?>">Cours suivant ></a>
+        <a href="<?= BASE_URL ?>?cours=<?= $next ?>">Cours suivant ▶️</a>
       <?php endif; ?>
     </div>
   </div>

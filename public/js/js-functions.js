@@ -46,35 +46,51 @@ document.addEventListener('click', (e) => {
 const menu = document.getElementById("burger_menu");
 menu.innerHTML = "";
 
-for (const type in indexCours) {
-  // Titre de catégorie
-  const categoryTitle = document.createElement("p");
-  categoryTitle.className = "menu_category";
-  categoryTitle.textContent = `${type}`;
+// Ajoute un lien accueil
+const hpLink = document.createElement("a");
+hpLink.textContent = "Accueil";
+hpLink.href = `${BASE_URL}`;
+menu.appendChild(hpLink);
 
-  menu.appendChild(categoryTitle);
+// récup les infos de l'URL pour savoir où on est et le mettre en avant
+const params = new URLSearchParams(window.location.search);
+const currentCourse = params.get("cours");
+const currentSummary = params.get("summary");
 
-  const div = document.createElement("div");
-  div.className = "menu_course";
+for (const subject in indexCours) {
 
-  for (const courseKey in indexCours[type]) {
-    const course = indexCours[type][courseKey];
+  // slug depuis le 1er chapitre → 1er cours
+  const chapters = indexCours[subject];
+  const firstChapterKey = Object.keys(chapters)[0];
+  const firstCourseKey = Object.keys(chapters[firstChapterKey])[0];
+  const subjectSlug = firstCourseKey.split("-")[0];
 
-    const a = document.createElement("a");
-    a.textContent = course.title_page;
-    a.href = `${BASE_URL}?cours=${courseKey}`;
+  // Création du lien sujet
+  const a = document.createElement("a");
+  a.className = "menu_subject";
+  a.textContent = subject;
+  a.href = `${BASE_URL}?summary=${subjectSlug}`;
 
-    div.appendChild(a);
+  // Par défaut => par du principe que n'est pas le lien actif
+  let isActive = false;
 
-  // Mise en avant du cours actuel
-  const currentCourse = new URLSearchParams(window.location.search).get("cours");
+  // Check si on est pas sur le summary du sujet, 
+  // si oui, le met en avant
+  if (currentSummary === subjectSlug) {
+    isActive = true;
+  }
 
-  if (courseKey === currentCourse) {
+  // Check si on est pas sur une page cours d'un sujet, 
+  // si oui, le met en avant
+  if (currentCourse && currentCourse.startsWith(subjectSlug + "-")) {
+    isActive = true;
+  }
+
+  if (isActive) {
     a.classList.add("current");
   }
-  }
 
-  menu.appendChild(div);
+  menu.appendChild(a);
 }
 
 
@@ -82,7 +98,8 @@ for (const type in indexCours) {
 
 let menuButton = document.getElementById("menu_button");
 let burgerMenu = document.getElementById("burger_menu");
-let headerContainer = document.getElementById("header")
+let overlay = document.getElementById("menu_overlay");
+let headerContainer = document.getElementById("header");
 
 if(menuButton) {
     menuButton.addEventListener("click", () => {
@@ -91,6 +108,7 @@ if(menuButton) {
     burgerMenu.style.left = rect.left + "px";    // aligné à gauche du bouton
     burgerMenu.classList.toggle("open");
     menuButton.classList.toggle("open");
+    overlay.classList.toggle("active");
     });
 
     // ferme le menu en cas de clic en dehors
@@ -105,6 +123,7 @@ if(menuButton) {
         if (!clickInsideMenu && !clickOnMenuButton) {
         burgerMenu.classList.remove('open');
         menuButton.classList.toggle('open');
+        overlay.classList.toggle('active');
         }
     });
     
@@ -113,6 +132,7 @@ if(menuButton) {
         if (e.key === 'Escape') {
             burgerMenu.classList.remove('open');
             menuButton.classList.toggle('open');
+            overlay.classList.toggle('active');
         }
     });
 }
@@ -120,32 +140,50 @@ if(menuButton) {
 
 /* Gestion des contenus des pages "Sommaire" */
 
-if(summaryType) {
-    // affichage du titre de la catégorie
-    summaryCategory = document.getElementById('summary_category');
-    summaryCategory.innerHTML = summaryType;
+if(typeof summaryType !== "undefined") {
+    // Titre du sujet
+    const summaryCategory = document.getElementById('summary_category');
+    summaryCategory.textContent = summaryType;
 
-    // affichage de la description
-    summaryDescription = document.getElementById('summary_description');
-    if(descriptionsCourses[summaryType]) {
-        summaryDescription.innerHTML = descriptionsCourses[summaryType];
-    } else { console.log('Pas de description pour ce cours')};
+    // Description du sujet
+    const summaryDescription = document.getElementById('summary_description');
+    if (descriptionsCourses[summaryType]) {
+    summaryDescription.innerHTML = descriptionsCourses[summaryType];
+    }
 
-    // affichage des cours
-    let summaryContentBloc = document.getElementById('summary_content');
-    for (const courseKey in indexCours[summaryType]) {
-        const course = indexCours[summaryType][courseKey];
+    // Contenu
+    const summaryContentBloc = document.getElementById('summary_content');
+    summaryContentBloc.innerHTML = "";
+
+    const subjectData = indexCours[summaryType];
+
+    for (const subPart in subjectData) {
+
+    // Sous-partie
+    const subPartTitle = document.createElement("h3");
+    subPartTitle.className = "summary_subpart";
+    subPartTitle.textContent = subPart;
+    summaryContentBloc.appendChild(subPartTitle);
+
+    const ul = document.createElement("ul");
+    ul.className = "summary_courses";
+
+    const courses = subjectData[subPart];
+
+    for (const courseKey in courses) {
+        const course = courses[courseKey];
+
+        const li = document.createElement("li");
+        li.className = "summary_course_item";
 
         const a = document.createElement("a");
         a.href = `${BASE_URL}?cours=${courseKey}`;
         a.classList.add('course_module');
 
-        const div = document.createElement("div");
-
         const p = document.createElement("p");
         p.textContent = course.title_page;
 
-        // SVG (namespace différent que le HTML)
+        // SVG
         const svgNS = "http://www.w3.org/2000/svg";
         const svg = document.createElementNS(svgNS, "svg");
         svg.setAttribute("viewBox", "0 0 50 50");
@@ -153,13 +191,25 @@ if(summaryType) {
         svg.setAttribute("height", "20");
 
         const path = document.createElementNS(svgNS, "path");
-        path.setAttribute("d", "M15.563,40.836c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293l15-15c0.391-0.391,0.391-1.023,0-1.414l-15-15c-0.391-0.391-1.023-0.391-1.414,0s-0.391,1.023,0,1.414l14.293,14.293L15.563,39.422C15.172,39.813,15.172,40.446,15.563,40.836z");
-    
+        path.setAttribute(
+        "d",
+        "M15.563,40.836c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293l15-15c0.391-0.391,0.391-1.023,0-1.414l-15-15c-0.391-0.391-1.023-0.391-1.414,0s-0.391,1.023,0,1.414l14.293,14.293L15.563,39.422C15.172,39.813,15.172,40.446,15.563,40.836z"
+        );
+
         svg.appendChild(path);
+
         a.appendChild(p);
         a.appendChild(svg);
-        summaryContentBloc.appendChild(a);
+
+        li.appendChild(a);
+        ul.appendChild(li);
     }
+
+    summaryContentBloc.appendChild(ul);
 }
+
+}
+
+
 
 

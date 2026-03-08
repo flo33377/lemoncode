@@ -8,12 +8,14 @@
 
 <div id="summary_page">
 
-    <h2 id="summary_category" class="subtitle green"></h2>
+    <h2 id="summary_category"></h2>
 
     <p id='summary_description'></p>
 
-    <div id='summary_content'>
-    </div>
+    <ol>
+        <div id='summary_content'>
+        </div>
+    </ol>
 
 </div>
 

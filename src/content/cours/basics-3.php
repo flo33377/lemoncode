@@ -1,5 +1,5 @@
 <div class="course_content">
-<h2 class="subtitle green">Les outils du développeur web</h2>
+<h1>Les outils du développeur web</h1>
 
 <p>En fonction de ce que vous cherchez à faire, vous serez amené à utiliser pas mal d'outils 
 en tant que développeur web, mais certains restent incontournables.<br>
@@ -7,16 +7,16 @@ Focus ici sur certains de ces outils et comment les utiliser, et nous ferons dan
 un focus particulier sur Git et GitHub en parlant du versioning. 
 </p>
 
+<h2>
 <div class="bloc_logo_title">
-    <img src="https://fneto-prod.fr/next-dev/public/img/logo-vscode.png" alt="logo Visual Studio Code">
-    <h3 class="subtitle white">Visual Studio Code</h3>
+    <img class="no_content_img" src="https://fneto-prod.fr/next-dev/public/img/logo-vscode.png" alt="logo Visual Studio Code">
+    <span class="subtitle blue">Visual Studio Code</span>
     <a href="https://code.visualstudio.com/download">Télécharger VS Code</a>
 </div>
-
-<div class="bloc_content_img">
+</h2>
 
 <div>
-<p><span class="bold">Qu'est-ce que c'est ?</span><br>
+<h3>Qu'est-ce que c'est ?</h3>
 Visual Studio Code, ou VS Code, est ce qu'on appelle un IDE, un environnement de 
 développement intégré, c'est-à-dire un logiciel regroupant à minima un éditeur de 
 code, des outils d'automatisation de la construction de code et un débogueur.<br>
@@ -45,16 +45,15 @@ et le customiser.
 
 <img src="https://fneto-prod.fr/next-dev/public/img/screenshot-vscode.png" alt="Screenshot démo Visual Studio Code">
 
-</div>
 
 
+<h2>
 <div class="bloc_logo_title">
-    <img src="https://static.jsbin.com/images/dave.min.svg">
-    <h3 class="subtitle white">JS Bin</h3>
+    <img class="no_content_img" src="https://static.jsbin.com/images/dave.min.svg" alt="logo JSBin">
+    <span class="subtitle blue">JS Bin</span>
     <a href="https://jsbin.com/?html,output">Visiter JS Bin</a>
 </div>
-
-<div class="bloc_content_img">
+</h2>
 
 <div>
 <p><span class="bold">Qu'est-ce que c'est ?</span><br>
@@ -83,7 +82,6 @@ HTML, CSS, JavaScript et d'avoir accès au rendu en direct ainsi qu'à une conso
 
 <img src="https://fneto-prod.fr/next-dev/public/img/screenshot-jsbin.png" alt="Screenshot démo Visual Studio Code">
 
-</div>
 
 
 </div>

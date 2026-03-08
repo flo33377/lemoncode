@@ -14,7 +14,6 @@
 /* echo '<pre>';
 print_r($_SESSION);
 echo '<pre>'; */
-print_r($title);
 ?>
 
 <h4 class="subtitle white">Découvrir les cours</h4>
@@ -57,6 +56,7 @@ print_r($title);
     </div>
 
 </div>
+
 
 <h4 class="subtitle white">Trucs et astuces</h4>
 <p>A venir ...</p>

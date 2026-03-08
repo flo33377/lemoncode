@@ -20,5 +20,24 @@ function doesCourseExist(string $requestedCourse, string $type, array $indexCour
 }
 
 
+function findCourseInIndex(string $courseKey, array $index) {
+    // renvoie un cours et ses infos s'il est trouvé, sinon renvoie null
+    foreach ($index as $subject => $subParts) {
+        foreach ($subParts as $subPart => $courses) {
+            if (isset($courses[$courseKey])) {
+                return [
+                    'subject'   => $subject,
+                    'subPart'   => $subPart,
+                    'courseKey' => $courseKey,
+                    'course'    => $courses[$courseKey],
+                    'siblings'  => array_keys($courses), // pour pagination
+                ];
+            }
+        }
+    }
+    return null;
+}
+
+
 
 ?>
